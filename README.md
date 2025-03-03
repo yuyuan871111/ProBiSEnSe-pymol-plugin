@@ -2,7 +2,7 @@
 **ProBiSEnSe** represents **Pro**tein **Bi**nding **S**ite **En**semble **Se**gmentation.  
 Adapted from [MaSIF](https://github.com/LPDI-EPFL/masif/tree/master/source/masif_pymol_plugin), it is a visualization tool for the feature rich surface files using PyMOL.
 
-Example data (PDB:5N69) open in Zenodo: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14950638.svg)](https://doi.org/10.5281/zenodo.14950638)
+***Example data (PDB:5N69) open in Zenodo:*** [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14950638.svg)](https://doi.org/10.5281/zenodo.14950638)
 
 
 ## Original features in masif_pymol_plugin:
@@ -33,6 +33,12 @@ If you have installed the plugin in your pymol, simply type:
 ```bash
 # loadply [.ply file], [interest_pt], [ignore_surface]
 loadply sample.ply, 1, 0
+```
+#### Test with example files [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14950638.svg)](https://doi.org/10.5281/zenodo.14950638)
+```bash
+# in your pymol command line
+load 5N69_complex.pdb         # protein + ligand (saved in the pdb file)   
+loadply 5N69_protein.ply      # protein surface file (default the interest_pt=1, ignore_surface=0
 ```
 
 ### Superimpose
