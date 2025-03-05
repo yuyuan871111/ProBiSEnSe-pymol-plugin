@@ -1,7 +1,8 @@
 # ProBiSEnSe pymol plugin
 **ProBiSEnSe** represents **Pro**tein **Bi**nding **S**ite **En**semble **Se**gmentation.  
-Adapted from [MaSIF](https://github.com/LPDI-EPFL/masif/tree/master/source/masif_pymol_plugin), it is a visualization tool for the feature rich surface files using PyMOL.
+Adapted from [MaSIF](https://github.com/LPDI-EPFL/masif/tree/master/source/masif_pymol_plugin), it is a visualization tool for the feature rich surface files using PyMOL.   
 
+![examples](./img/examples.jpg)
 ***Example data (PDB:5N69) open in Zenodo:*** [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14950638.svg)](https://doi.org/10.5281/zenodo.14950638)
 
 
@@ -18,41 +19,66 @@ Adapted from [MaSIF](https://github.com/LPDI-EPFL/masif/tree/master/source/masif
 
 
 ## How to use?
+### Download
+First, download the zip file from GitHub:   
+```bash
+wget https://github.com/yuyuan871111/ProBiSEnSe_pymol_plugin/releases/download/0.1.1/ProBiSEnSe_pymol_plugin.zip
+```
+Then, install the plugin using `Plugin Manager` in PyMOL.
+1. `Install New Plugin` > `Install from local file` > `Choose file...` > go to the path where you download your zip file (no need to decompress) > `install`   
+2. Restart PyMOL and will be available when using console in PyMOL.  
+
+
 ### Load
-In PyMOL console, you can do it like this:
+If you have installed the plugin in your PyMOL, simply type:
+```bash
+# loadply [.ply file], [interest_pt], [ignore_surface]
+loadply sample.ply, 1, 0
+```
+
+Alternatively:   
 ```python
+# alternative way in PyMOL console with correct path of the package
 from probiosense_pymol_plugin.loadPLY import load_ply
 load_ply(filename = "sample.ply", interest_pt = 1, ignore_surface = 0)
 ```
 Note that:
 * `filename`: indicate your .ply file
-* `insterest_pt`: if you want to draw only the regions of interest, set it `1`. Otherwise, set it `0` for the whole protein.
-* `ignore_surface`: if you want to draw the surface as well, set it `0`. Otherwise, set it `1` to ignore the surface.
+* `insterest_pt`: if you want to draw only the regions of interest, set it `1`. Otherwise, set it `0` for the whole protein. (default: `1`)
+* `ignore_surface`: if you want to draw the surface as well, set it `0`. Otherwise, set it `1` to ignore the surface. (default: `0`)
 
-If you have installed the plugin in your pymol, simply type:
-```bash
-# loadply [.ply file], [interest_pt], [ignore_surface]
-loadply sample.ply, 1, 0
-```
 #### Test with example files [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14950638.svg)](https://doi.org/10.5281/zenodo.14950638)
 ```bash
-# in your pymol command line
+# in your pymol console
 load 5N69_complex.pdb         # protein + ligand (saved in the pdb file)   
-loadply 5N69_protein.ply      # protein surface file (default the interest_pt=1, ignore_surface=0
+loadply 5N69_protein.ply      # protein surface file using default settings
 ```
 
-### Superimpose
-The `sample` will be aligned to `reference` and the `sample.ply` will be aligned using the same rotational translational matrix.  
-* `sample` is a pdb object in pymol.
-* `sample.ply` is a cgo group, which was loaded using `loadply`. The `sample.ply` sould be the surface file of the pdb file `sample`.  
-*  `reference` is a reference pdb object in pymol to be aligned to.
-
+### Superimpose (for PLY)
+This superimpose function is to superimpose the PLY file based on the correponding PDB file. This was implemented by superimposing `sample` to `reference` and `sample.ply` will be transformed using the same rotational translational matrix.   
 ```bash
 # superply [pdb_query object name], [ply_query name], [pdb_ref object name]
 superply sample, sample.ply, reference
 ```
+* `sample` is a pdb object in pymol.
+* `sample.ply` is a `cgo group`, which was loaded using `loadply`. The `sample.ply` **must** be the surface file of the pdb file `sample`.  
+*  `reference` is a reference pdb object in pymol to be aligned to.
 
-## Pack the script
+#### Test with example files [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14950638.svg)](https://doi.org/10.5281/zenodo.14950638)
+```bash
+# in your pymol console
+load 5N69_complex.pdb         # load the pdb file
+loadply 5N69_protein.ply      # load the ply file 
+
+fetch 8QYR                    # fetch a reference PDB file
+
+superply 5N69_complex, 5N69_protein.ply, 8QYR  # superimpose the ply 
+```
+
+## Pack the script into a zip file
 ```bash
 zip -r {filename.zip} {foldername}
+
+# e.g.
+zip -r ProBiSEnSe_pymol_plugin.zip ProBiSEnSe_pymol_plugin
 ```
